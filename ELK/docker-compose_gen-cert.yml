@@ -1,0 +1,30 @@
+version: '3'
+services:
+  create_certs:
+    container_name: create_certs
+    image: elasticsearch:$ELK_VERSION
+    working_dir: /usr/share/elasticsearch
+    command: >
+      bash -c '
+        if [[ ! -d config/certicates/ca ]]; then
+          bin/elasticsearch-certutil ca -out config/certificates/ca.zip --silent --pem;
+          unzip config/certificates/ca.zip -d config/certificates;
+          rm config/certificates/ca.zip;
+        fi;
+        if [[ -d config/certificates/es01 ]]; then
+          rm -R config/certificates/es01 config/certificates/kibana config/certificates/logstash;
+        fi;
+        bin/elasticsearch-certutil cert --silent --pem --in config/instances.yml \
+        -out config/certificates/bundle.zip --ca-key config/certificates/ca/ca.key \
+        --ca-cert config/certificates/ca/ca.crt;
+        unzip config/certificates/bundle.zip -d config/certificates/;
+        rm config/certificates/bundle.zip;
+      '
+    volumes: 
+      - './instances.yml:/usr/share/elasticsearch/config/instances.yml'
+      - './certs:/usr/share/elasticsearch/config/certificates'
+    environment:
+      - node.name=es_gen_cert
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD

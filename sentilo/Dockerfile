@@ -42,27 +42,27 @@ RUN ./scripts/buildSentilo.sh
 # copiar para webapps
 RUN cp sentilo-catalog-web/target/sentilo-catalog-web.war /usr/local/tomcat/webapps
 
-# configure opentsdb for docker network
-RUN sed -i "s/.*catalog.mongodb.host=.*/catalog.mongodb.host=mongo-server/" sentilo-agent-historian/src/main/resources/properties/catalog-config.properties
-RUN sed -i "s/.*jedis.pool.host=.*/jedis.pool.host=redis-server/" sentilo-agent-historian/src/main/resources/properties/jedis-config.properties
-RUN sed -i "s/opentsdb.url=http:\/\/127.0.0.1:4242/opentsdb.url=http:\/\/opentsdb-server:4242/g" sentilo-agent-historian/src/main/resources/properties/historian-config.properties
+# # configure opentsdb for docker network
+# RUN sed -i "s/.*catalog.mongodb.host=.*/catalog.mongodb.host=mongo-server/" sentilo-agent-historian/src/main/resources/properties/catalog-config.properties
+# RUN sed -i "s/.*jedis.pool.host=.*/jedis.pool.host=redis-server/" sentilo-agent-historian/src/main/resources/properties/jedis-config.properties
+# RUN sed -i "s/opentsdb.url=http:\/\/127.0.0.1:4242/opentsdb.url=http:\/\/opentsdb-server:4242/g" sentilo-agent-historian/src/main/resources/properties/historian-config.properties
 
-#configure elasticsearch for docker network
-RUN sed -i "s/.*catalog.mongodb.host=.*/catalog.mongodb.host=mongo-server/" sentilo-agent-activity-monitor/src/main/resources/properties/catalog-config.properties
-RUN sed -i "s/.*jedis.pool.host=.*/jedis.pool.host=redis-server/" sentilo-agent-activity-monitor/src/main/resources/properties/jedis-config.properties
-RUN sed -i "s/elasticsearch.url=http:\/\/localhost:9200/elasticsearch.url=http:\/\/agent-proxy:9000/g" sentilo-agent-activity-monitor/src/main/resources/properties/monitor-config.properties
+# #configure elasticsearch for docker network
+# RUN sed -i "s/.*catalog.mongodb.host=.*/catalog.mongodb.host=mongo-server/" sentilo-agent-activity-monitor/src/main/resources/properties/catalog-config.properties
+# RUN sed -i "s/.*jedis.pool.host=.*/jedis.pool.host=redis-server/" sentilo-agent-activity-monitor/src/main/resources/properties/jedis-config.properties
+# RUN sed -i "s/elasticsearch.url=http:\/\/localhost:9200/elasticsearch.url=http:\/\/agent-proxy:9000/g" sentilo-agent-activity-monitor/src/main/resources/properties/monitor-config.properties
 
 # execute permission for sentilo server
 RUN chmod +x sentilo-platform/sentilo-platform-server/target/appassembler/bin/sentilo-server
 
 # create folder to script
-RUN mkdir /sentilo/persistence-agents
+# RUN mkdir /sentilo/persistence-agents
 
-# copy script that run agents
-COPY agents-install.sh /sentilo/persistence-agents
+# # copy script that run agents
+# COPY agents-install.sh /sentilo/persistence-agents
 
-# give execute permission to script
-RUN chmod +x /sentilo/persistence-agents/agents-install.sh
+# # give execute permission to script
+# RUN chmod +x /sentilo/persistence-agents/agents-install.sh
 
 # supervisor conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf

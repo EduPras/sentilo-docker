@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  es01:
+    image: elasticsearch:$ELK_VERSION
+    container_name: elastic_es01
+    environment:
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - 9200:9200
+    volumes:
+      - es01_data:/usr/share/elasticsearch/data
+      - ./elasticsearch/elasticsearch.yml:$ELASTIC_CONF_PATH/elasticsearch.yml
+      - ./certs:$ELASTIC_CONF_PATH/certs
+    networks:
+      - elk_network
+    healthcheck:
+      test: curl --cacert $ELASTIC_CONF_PATH/certs/ca/ca.crt -s https://localhost:9200 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+      interval: 30s
+      timeout: 10s
+      retries: 5 
+
+  kibana:
+    image: kibana:$ELK_VERSION
+    container_name: elastic_kibana
+    ports:
+      - 5601:5601
+    volumes:
+      - ./kibana/kibana.yml:$KBN_CONF_PATH/kibana.yml
+      - ./certs:$KBN_CONF_PATH/certs/
+    networks:
+      - elk_network
+    depends_on:
+      es01:
+        condition: service_healthy
+
+  logstash:
+    image: logstash:$ELK_VERSION
+    container_name: elastic_logstash
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/logstash.yml:$LOGSTASH_CONF_PATH/logstash.yml
+      - ./certs/:$LOGSTASH_CONF_PATH/certs/
+    depends_on:
+      es01:
+        condition: service_healthy   
+    
+    networks:
+      - elk_network
+      - sentilo_network
+
+  agent-proxy:
+    image: nginx:latest
+    container_name: elastic_agent_nginx
+    volumes:
+      - ../proxy/agent/default.conf:/etc/nginx/conf.d/default.conf
+      - ../certs/:/etc/nginx/certs/
+    depends_on:
+      es01:
+        condition: service_healthy
+    networks:
+      - elk_network
+
+
+networks:
+  elk_network:
+    driver: bridge
+  sentilo_network:
+    name: sentilo_network
+    external: true
+
+volumes:
+  es01_data:
+    driver: local

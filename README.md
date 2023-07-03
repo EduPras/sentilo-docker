@@ -2,4 +2,5 @@
 
 cd sentilo-docker
 
-docker-compose up
+chmod -x start_sentilo.sh
+./start_sentilo.sh
