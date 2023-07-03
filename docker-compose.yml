@@ -1,8 +1,8 @@
 version: "3.7"
 services:
   sentilo-server:
-    #  image: luismariotti1/sentilo
-    build: sentilo
+    image: sentilo-server
+    # build: sentilo
     container_name: sentilo_servers
     depends_on:
       - "mongo-server"

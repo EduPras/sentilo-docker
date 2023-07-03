@@ -2,27 +2,28 @@ version: '3'
 services:
   create_certs:
     container_name: create_certs
+    user: '0'
     image: elasticsearch:$ELK_VERSION
     working_dir: /usr/share/elasticsearch
     command: >
       bash -c '
-        if [[ ! -d config/certicates/ca ]]; then
-          bin/elasticsearch-certutil ca -out config/certificates/ca.zip --silent --pem;
-          unzip config/certificates/ca.zip -d config/certificates;
-          rm config/certificates/ca.zip;
+        if [[ ! -d config/certs/ca ]]; then
+          bin/elasticsearch-certutil ca -out config/certs/ca.zip --silent --pem;
+          unzip config/certs/ca.zip -d config/certs;
+          rm config/certs/ca.zip;
         fi;
-        if [[ -d config/certificates/es01 ]]; then
-          rm -R config/certificates/es01 config/certificates/kibana config/certificates/logstash;
+        if [[ -d config/certs/es01 ]]; then
+          rm -R config/certs/es01 config/certs/kibana config/certs/logstash;
         fi;
         bin/elasticsearch-certutil cert --silent --pem --in config/instances.yml \
-        -out config/certificates/bundle.zip --ca-key config/certificates/ca/ca.key \
-        --ca-cert config/certificates/ca/ca.crt;
-        unzip config/certificates/bundle.zip -d config/certificates/;
-        rm config/certificates/bundle.zip;
+        -out config/certs/bundle.zip --ca-key config/certs/ca/ca.key \
+        --ca-cert config/certs/ca/ca.crt;
+        unzip config/certs/bundle.zip -d config/certs/;
+        rm config/certs/bundle.zip;
       '
     volumes: 
       - './instances.yml:/usr/share/elasticsearch/config/instances.yml'
-      - './certs:/usr/share/elasticsearch/config/certificates'
+      - './certs:/usr/share/elasticsearch/config/certs'
     environment:
       - node.name=es_gen_cert
       - discovery.type=single-node

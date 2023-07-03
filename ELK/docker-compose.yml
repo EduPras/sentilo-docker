@@ -65,6 +65,7 @@ services:
 
 networks:
   elk_network:
+    name: elk_network
     driver: bridge
   sentilo_network:
     name: sentilo_network
