@@ -68,7 +68,7 @@ networks:
     name: elk_network
     driver: bridge
   sentilo_network:
-    name: sentilo_network
+    name: sentilo200_sentilo_network
     external: true
 
 volumes:
