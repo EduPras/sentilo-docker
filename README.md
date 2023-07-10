@@ -1,6 +1,10 @@
 # sentilo-docker
 
-cd sentilo-docker
+```sh
+    cd sentilo-core
+    ./build_sentilo_docker_image.sh
+    ./start_sentilo_docker_image.sh
 
-chmod -x start_sentilo.sh
-./start_sentilo.sh
+    cd ../ELK
+    docker-compose up -d
+```
