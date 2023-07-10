@@ -6,10 +6,9 @@ services:
     command: ["redis-server", "/usr/local/etc/redis/redis.conf", "--appendonly", "yes"]
     volumes:
       - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - sentilo-redis-vol:/data
     ports:
       - "6379:6379"
-    expose:
-      - 6379
     networks:
       - sentilo_network
                
@@ -23,10 +22,9 @@ services:
     volumes:
       - ./config/mongo/config/mongod.conf:/etc/mongod/mongod.conf
       - ./config/mongo/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
+      - sentilo-mongo-vol:/data/db
     ports:
       - "27017:27017"
-    expose:
-      - 27017
     healthcheck:
       test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u admin -p 'sentilo' --quiet) -eq 1
       interval: 10s
@@ -42,7 +40,6 @@ services:
       - ./conf/:/etc/sentilo/
       - ./logs/:/var/log/sentilo/
     ports:
-      # - "8081:8081"
       - "7081:7081"
     depends_on:
       - sentilo-catalog-web
@@ -110,4 +107,8 @@ networks:
   sentilo_network:
     ipam:
       driver: default
-  
+
+volumes:
+  sentilo-mongo-vol:
+  sentilo-redis-vol:
+    driver: local
