@@ -2,7 +2,7 @@
 
 # variables used into the docker-compose.yml
 export SENTILO_VERSION="2.0.0"
-export COMPOSE_PROJECT_NAME="Sentilo${SENTILO_VERSION}"
+export COMPOSE_PROJECT_NAME="Sentilo200"
 export REDIS_VERSION="6.2.6-alpine"
 export MONGO_VERSION="4.4.2-bionic"
 
