@@ -17,7 +17,7 @@ echo "==========================================================="
 
 echo "Starting Sentilo v$SENTILO_VERSION..."
 
-docker-compose up -d
+docker compose up -d
 if [ $? -ne 0 ]; then
 	echo ""
 	echo "ERROR: An error occurred while starting the docker services."

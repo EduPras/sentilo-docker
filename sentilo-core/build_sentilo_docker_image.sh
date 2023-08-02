@@ -25,7 +25,7 @@ fi
 
 # Remove previous images
 echo "Removing previous images for Sentilo v$SENTILO_VERSION docker"
-docker-compose rm -fsv
+docker compose rm -fsv
 rm -rf ./logs
 
 sleep 2
@@ -36,7 +36,7 @@ echo ""
 sleep 2
 
 # build docker image
-docker-compose build --no-cache --pull
+docker compose build --no-cache --pull
 if [ $? -ne 0 ]; then
 	echo ""
 	echo "An error occurred while building the docker services."
@@ -46,7 +46,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # create docker services
-docker-compose up --no-start --force-recreate
+docker compose up --no-start --force-recreate
 if [ $? -ne 0 ]; then
 	echo ""
 	echo "An error occurred while creating the docker services."
