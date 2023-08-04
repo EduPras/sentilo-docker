@@ -2,3 +2,4 @@ certificados
 certificados.zip
 estest
 __pycache__
+**/*.log

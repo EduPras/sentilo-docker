@@ -11,12 +11,8 @@ header_ttn = {
 	"Authorization": "Bearer NNSXS.QEKN262SW4UOZ3OBQLKPUZDJPOY7OVGTL5RHRDQ.BEDDSFM5IOOP4EDUGVUBX63DQZQ6J77HK2RJHI243XXMXKJSVI2A"
 }
 
-VER  = "16-03-2022 v1.0"
-import os, sys, logging, time
-from urllib import request
-print(os.path.basename(__file__) + " " + VER)
+import os, sys, logging
 
-print("Imports:")
 import paho.mqtt.client as mqtt
 import json
 import csv
@@ -24,7 +20,13 @@ from datetime import datetime
 import requests
 from main_parser import parser
 
-print("Functions:")
+logging.basicConfig(filename="forwarder.log",
+                    filemode='a',
+                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                    datefmt='%H:%M:%S',
+                    level=logging.DEBUG)
+
+logger = logging.getLogger('MQTT')
 
 # Write uplink to tab file
 def saveToFile(someJSON):
@@ -87,34 +89,27 @@ def saveToFile(someJSON):
 # MQTT event functions
 def on_connect(mqttc, obj, flags, rc):
 	if rc == 0:
-		print("Connection successful!")
+		logger.info("Connected!")
 		mqttc.subscribe("v3/+/devices/+/up", 0)
 	elif rc == 1:
-		print("Connection refused - invalid client identifier")
+		logger.error("Connection refused - invalid client identifier")
 	elif rc == 2:
-		print("Connection refused - invalid client identifier")
+		logger.error("Connection refused - invalid client identifier")
 	elif rc == 3:
-		print("Connection refused - server unavailable")
+		logger.error("Connection refused - server unavailable")
 	elif rc == 4:
-		print("Connection refused - bad username or password")
+		logger.error("Connection refused - bad username or password")
 	elif rc == 5:
-		print("Connection refused - not authorised")
+		logger.error("Connection refused - not authorised")
 
-	print("\nReturn code: " + str(rc))
+	# print("\nReturn code: " + str(rc))
 
 def on_message(mqttc, obj, msg):
-	print("\nMessage: " + msg.topic + " " + str(msg.qos)) # + " " + str(msg.payload))
-	parsedJSON = json.loads(msg.payload)
-	try:
-		# print(parsedJSON)
-		parser(parsedJSON)
-	except e:
-		print(e)
-		print("Error while parsing to Sentilo")
-	# saveToFile(parsedJSON)
+	logger.info("Message: " + msg.topic + " " + str(msg.qos)) # + " " + str(msg.payload))
+	parser(json.loads(msg.payload))
 
 def on_subscribe(mqttc, obj, mid, granted_qos):
-	print("\nSubscribe: " + str(mid) + " " + str(granted_qos))
+	logger.info("Subscribe: " + str(mid) + " " + str(granted_qos))
 
 def on_log(mqttc, obj, level, string):
 	print("\nLog: "+ string)
@@ -138,7 +133,6 @@ def get_apps(app_ids, clients):
 # clients = [] # Lista de clientes MQTT
 # get_apps(app_ids, clients)
 
-# Init mqtt client
 mqttc = mqtt.Client()
 
 # Assign callbacks
@@ -146,21 +140,17 @@ mqttc.on_connect = on_connect
 mqttc.on_subscribe = on_subscribe
 mqttc.on_message = on_message
 
-print("Connect")
-# Setup authentication from settings above
 mqttc.username_pw_set(User, Organization_password)
 mqttc.connect("au1.cloud.thethings.network", 1883, 60)
-# Subscribe to
 mqttc.subscribe("v3/+/devices/+/up", 0)	# all device uplinks
 
-print("And run forever")
 try:
-	mqttc.loop_forever(10) # 10 segundos de delay
+	mqttc.loop_forever(10)
 except KeyboardInterrupt:
 	mqttc.disconnect()
-	print("Exit")
+	logger.info("Exited with status 0")
 	sys.exit(0)
 except:
-	print("Something went wrong!")
+	logger.exception("Exited with status 1")
 	mqttc.disconnect()
 	sys.exit(0)
