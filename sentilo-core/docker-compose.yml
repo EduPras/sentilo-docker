@@ -1,5 +1,5 @@
 services:
-      
+  # databases
   sentilo-redis:
     image: redis:${REDIS_VERSION}
     container_name: sentilo-redis
@@ -26,14 +26,15 @@ services:
       - "27017:27017"
     expose:
       - 27017
-    # healthcheck:
-    #   test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u admin -p 'sentilo' --quiet) -eq 1
-    #   interval: 10s
-    #   start_period: 30s
-    # command: [ "--replSet", "rs_sentilo", "--bind_ip_all" ]
+    healthcheck:
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u admin -p 'sentilo' --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    command: [ "--replSet", "rs_sentilo", "--bind_ip_all" ]
     networks:
       - sentilo_network
-      
+
+  # api-server    
   sentilo-platform-server:
     image: sentilo/sentilo-platform-server:${SENTILO_VERSION}
     container_name: sentilo-platform-server
@@ -43,10 +44,35 @@ services:
     ports:
       - "7081:7081"
     depends_on:
-      - sentilo-catalog-web
+      sentilo-catalog-web:
+        condition: service_healthy
     networks:
       - sentilo_network
-      
+  
+  # web-catalog
+  sentilo-catalog-web:
+    image: sentilo/sentilo-catalog-web:${SENTILO_VERSION}
+    container_name: sentilo-catalog-web
+    ports:
+      - "8080:8080"
+    depends_on:
+      sentilo-mongodb:
+        condition: service_healthy
+      sentilo-redis:
+        condition: service_started
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://sentilo-catalog-web:8080/sentilo-catalog-web/ || exit 1 
+      interval: 15s
+      timeout: 10s
+      retries: 15
+      start_period: 0s
+    volumes:
+      - ./conf/:/etc/sentilo/
+      - ./logs/:/var/log/sentilo/
+    networks:
+      - sentilo_network   
+
+  # agents in general
   sentilo-agent-alert:
     image: sentilo/sentilo-agent-alert:${SENTILO_VERSION}
     container_name: sentilo-agent-alert
@@ -54,8 +80,10 @@ services:
       - ./conf/:/etc/sentilo/
       - ./logs/:/var/log/sentilo/
     depends_on:
-      - sentilo-platform-server
-      # - sentilo-mongodb
+      sentilo-platform-server:
+        condition: service_started
+      sentilo-mongodb:
+        condition: service_healthy
     networks:
       - sentilo_network
       
@@ -70,25 +98,7 @@ services:
     networks:
       - sentilo_network
 
-  sentilo-catalog-web:
-    image: sentilo/sentilo-catalog-web:${SENTILO_VERSION}
-    container_name: sentilo-catalog-web
-    ports:
-      - "8080:8080"
-    expose:
-      - 8080
-    links:
-      - sentilo-mongodb
-      - sentilo-redis
-    depends_on:
-      - sentilo-mongodb
-      - sentilo-redis
-    volumes:
-      - ./conf/:/etc/sentilo/
-      - ./logs/:/var/log/sentilo/
-    networks:
-      - sentilo_network
-  
+  # proxy 
   nginx-proxy:
     image: nginx:latest
     container_name: sentilo_nginx
