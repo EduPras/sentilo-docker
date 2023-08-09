@@ -22,6 +22,8 @@ services:
     volumes:
       - ./config/mongo/config/mongod.conf:/etc/mongod/mongod.conf
       - ./config/mongo/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
+      - sentilo-mongo-vol:/data/db
+
     ports:
       - "27017:27017"
     expose:
