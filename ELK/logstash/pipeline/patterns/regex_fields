@@ -1,2 +1,2 @@
-COMPONENT [A-Z1-9]*_[\d+]
-SENSORTYPE [A-Z0-9]*
+SENSORTYPE (.*)
+COMPONENT ^[^_]*
