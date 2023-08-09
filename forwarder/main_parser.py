@@ -5,7 +5,7 @@ import urllib3
 redirect_url = "https://200.134.31.211/data/PM_station/"
 headers = {
 	'Content-Type': 'application/json',
-	'IDENTITY_KEY': '01eb334b600c1b0ad3b7e7e552d5d4d473c7b0c971955d77b1b157441a1c7894'
+	'IDENTITY_KEY': '792fbe84436b7ce917e488ff7a2f91667137a5f47be2833259628a15a09350d3'
 }
 
 urllib3.disable_warnings()
