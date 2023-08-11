@@ -11,3 +11,4 @@ server.publicBaseUrl: https://200.134.31.211:5601
 
 elasticsearch.hosts: ["https://es01:9200"]
 elasticsearch.ssl.certificateAuthorities: [ "/usr/share/kibana/config/certs/ca/ca.crt" ]
+xpack.security.sameSiteCookies: "None"
