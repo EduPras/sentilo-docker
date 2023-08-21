@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  grafana:
+    image: grafana/grafana-oss
+    container_name: sentilo-grafana
+    restart: unless-stopped
+    ports:
+     - '3000:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - elk_network
+
+
+volumes:
+  grafana-data:
+    driver: local
+networks:
+  elk_network:
+    name: elk_network
+    external: true
