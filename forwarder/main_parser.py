@@ -20,6 +20,8 @@ def parser(json_message):
     date, hour = str(json_message["received_at"]).split('.')[0].split('T')
     hour = hour.split(':')
     hour[0] = str(int(hour[0])-3)
+    if (hour[0] < 0):
+        hour[0] = 24 + hour[0]
     hour = ':'.join(hour)
     date = date.split('-')
     date = '/'.join((date[2], date[1], date[0]))
