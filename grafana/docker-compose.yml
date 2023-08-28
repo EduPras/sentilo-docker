@@ -9,13 +9,13 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
     networks:
-      - elk_network
+      - sentilo_network
 
 
 volumes:
   grafana-data:
     driver: local
 networks:
-  elk_network:
-    name: elk_network
+  sentilo_network:
+    name: sentilo_network
     external: true

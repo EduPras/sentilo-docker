@@ -118,8 +118,8 @@ services:
   
 networks:
   sentilo_network:
-    ipam:
-      driver: default
+    name: sentilo_network
+    external: true
 
 volumes:
   sentilo-mongo-vol:

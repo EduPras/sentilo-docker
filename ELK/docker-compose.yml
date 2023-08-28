@@ -14,7 +14,7 @@ services:
       - ./elasticsearch/elasticsearch.yml:$ELASTIC_CONF_PATH/elasticsearch.yml
       - ./certs:$ELASTIC_CONF_PATH/certs
     networks:
-      - elk_network
+      - sentilo_network
     healthcheck:
       test: curl --cacert $ELASTIC_CONF_PATH/certs/ca/ca.crt -s https://localhost:9200 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
       interval: 30s
@@ -30,7 +30,7 @@ services:
       - ./kibana/kibana.yml:$KBN_CONF_PATH/kibana.yml
       - ./certs:$KBN_CONF_PATH/certs/
     networks:
-      - elk_network
+      - sentilo_network
     depends_on:
       es01:
         condition: service_healthy
@@ -47,7 +47,6 @@ services:
         condition: service_healthy   
     
     networks:
-      - elk_network
       - sentilo_network
 
   agent-proxy:
@@ -60,15 +59,11 @@ services:
       es01:
         condition: service_healthy
     networks:
-      - elk_network
-
-
+      - sentilo_network
+  
 networks:
-  elk_network:
-    name: elk_network
-    driver: bridge
   sentilo_network:
-    name: sentilo200_sentilo_network
+    name: sentilo_network
     external: true
 
 volumes:
