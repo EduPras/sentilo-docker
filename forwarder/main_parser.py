@@ -6,7 +6,7 @@ import json
 redirect_url = "https://200.134.31.211/data/PM_station/"
 headers = {
 	'Content-Type': 'application/json',
-	'IDENTITY_KEY': '792fbe84436b7ce917e488ff7a2f91667137a5f47be2833259628a15a09350d3'
+	'IDENTITY_KEY': '2715a2fb185b24e25b33f486464b21cc7bbd2c9da3f076bd72f42b2850b45324'
 }
 
 urllib3.disable_warnings()
@@ -50,7 +50,6 @@ def parser(json_message):
                 "timestamp" : timestamp,
                 "location": location
             }]
-            print(to_send)
             send_to_sentilo(this_device, to_send, value)
     return
 

@@ -122,7 +122,7 @@ def get_apps(app_ids, clients):
 	parsedResp = json.loads(resp.text)["applications"]
 	for item in parsedResp:
 		new_app = item["ids"].get("application_id")
-		print("app_id %s" % new_app)
+		# print("app_id %s" % new_app)
 		if new_app not in app_ids:
 			app_ids.append(new_app)
 			# connects new app to a new MQTT client
