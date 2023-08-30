@@ -17,7 +17,7 @@ echo "==========================================================="
 
 echo "Stopping Sentilo v$SENTILO_VERSION..."
 
-docker compose down
+docker compose stop
 if [ $? -ne 0 ]; then
 	echo ""
 	echo "ERROR: An error occurred while stopping the docker services."

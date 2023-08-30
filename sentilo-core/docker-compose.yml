@@ -70,6 +70,7 @@ services:
     volumes:
       - ./conf/:/etc/sentilo/
       - ./logs/:/var/log/sentilo/
+      - sentilo-catalog:/usr/local/tomcat/webapps
     networks:
       - sentilo_network   
 
@@ -123,5 +124,8 @@ networks:
 
 volumes:
   sentilo-mongo-vol:
+    external: true
   sentilo-redis-vol:
-    driver: local
+    external: true
+  sentilo-catalog:
+    external: true
