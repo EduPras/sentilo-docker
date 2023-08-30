@@ -41,8 +41,11 @@ def parser(json_message):
             this_device = device_id + "_" + key
             to_send["observations"] = [{
                 "value" : json.dumps({
-                    'value': value,
-                    'location': location
+                    'raw_value': value,
+                    'coordinates':{
+                        'lat': latitude,
+                        'lon': longitude
+                    }
                 }),
                 "timestamp" : timestamp,
                 "location": location
