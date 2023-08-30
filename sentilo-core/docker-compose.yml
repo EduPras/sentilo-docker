@@ -44,6 +44,7 @@ services:
       - ./logs/:/var/log/sentilo/
     ports:
       - "7081:7081"
+      - "8081:8081"
     depends_on:
       sentilo-catalog-web:
         condition: service_healthy

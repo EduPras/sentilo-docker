@@ -1,6 +1,7 @@
 import requests
 import logging
 import urllib3
+import json
 
 redirect_url = "https://200.134.31.211/data/PM_station/"
 headers = {
@@ -20,23 +21,33 @@ def parser(json_message):
     date, hour = str(json_message["received_at"]).split('.')[0].split('T')
     hour = hour.split(':')
     hour[0] = str(int(hour[0])-3)
-    if (hour[0] < 0):
-        hour[0] = 24 + hour[0]
+    if (int(hour[0]) < 0):
+        hour[0] = str(24 + int(hour[0]))
     hour = ':'.join(hour)
     date = date.split('-')
     date = '/'.join((date[2], date[1], date[0]))
     timestamp = 'T'.join((date, hour))
 
-    uplink_message = json_message["uplink_message"];
+    # location
+    uplink_message = json_message["uplink_message"]
+    latitude = uplink_message["locations"]["user"]["latitude"]
+    longitude = uplink_message["locations"]["user"]["longitude"]
+    location = f'{latitude} {longitude}'
+    
     to_send = { "observations" : []}
 
     for key, value in uplink_message["decoded_payload"].items():
         if value != 'NaN':
             this_device = device_id + "_" + key
             to_send["observations"] = [{
-                "value" : value,
-                "timestamp" : timestamp 
+                "value" : json.dumps({
+                    'value': value,
+                    'location': location
+                }),
+                "timestamp" : timestamp,
+                "location": location
             }]
+            print(to_send)
             send_to_sentilo(this_device, to_send, value)
     return
 
@@ -46,6 +57,8 @@ def send_to_sentilo(sensor_id, body, value):
         resp = requests.put(url=sensor_url, json=body, headers=headers, verify=False)
         if resp.status_code == 200:
             logger.info("Uplink fowarded succesfully! sensor_id: " + str(sensor_id) + " - " + str(value))
-    except requests.exceptions.RequestException as e:
-        logger.exception("Uplink request error: ", e.strerror)
+        else:
+            logger.warn("Uplink fowarded status code: " + str(resp.status_code))
+    except:
+        logger.exception("Uplink request error")
     return
