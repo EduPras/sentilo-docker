@@ -19,11 +19,11 @@ def parser(json_message):
     device_id = end_device_ids["device_id"]
     # Treat timestamp to dd/MM/yyyyTHH:mm:ssZ
     date, hour = str(json_message["received_at"]).split('.')[0].split('T')
-    hour = hour.split(':')
-    hour[0] = str(int(hour[0])-3)
-    if (int(hour[0]) < 0):
-        hour[0] = str(24 + int(hour[0]))
-    hour = ':'.join(hour)
+    # hour = hour.split(':')
+    # hour[0] = str(int(hour[0])-3)
+    # if (int(hour[0]) < 0):
+    #     hour[0] = str(24 + int(hour[0]))
+    # hour = ':'.join(hour)
     date = date.split('-')
     date = '/'.join((date[2], date[1], date[0]))
     timestamp = 'T'.join((date, hour))
