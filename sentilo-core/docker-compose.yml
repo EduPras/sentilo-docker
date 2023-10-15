@@ -62,6 +62,8 @@ services:
         condition: service_healthy
       sentilo-redis:
         condition: service_started
+    environment:
+      JAVA_OPTS: "-Dsentilo.multitenant=true -Dspring.profiles.active=dev -Dsentilo.state_page.enabled=true"
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://sentilo-catalog-web:8080/sentilo-catalog-web/ || exit 1 
       interval: 15s
@@ -71,7 +73,6 @@ services:
     volumes:
       - ./conf/:/etc/sentilo/
       - ./logs/:/var/log/sentilo/
-      - sentilo-catalog:/usr/local/tomcat/webapps
     networks:
       - sentilo_network   
 
@@ -127,6 +128,4 @@ volumes:
   sentilo-mongo-vol:
     external: true
   sentilo-redis-vol:
-    external: true
-  sentilo-catalog:
     external: true
