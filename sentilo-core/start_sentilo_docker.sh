@@ -11,6 +11,7 @@ export MONGO_VERSION="4.4.2-bionic"
 # They are mandatory
 export SENTILO_CONF_DIR="./conf"
 
+source ../.env
 echo "==========================================================="
 echo " Starting Stentilo v$SENTILO_VERSION docker"
 echo "==========================================================="

@@ -4,3 +4,4 @@ estest
 __pycache__
 **/*.log
 certs/server/
+.envsrc
