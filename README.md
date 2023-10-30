@@ -1,6 +1,14 @@
 # sentilo-docker
 
-Para iniciar o projeto de forma correta é necessário seguir a seguinte order:
+## Setup
+
+### Certificados
+Antes de iniciar o projeto é necessário que as chaves **privada, pública e de requisição**
+estejam localizadas em **certs/server**, sendo nomeadas, respectivamente como: 
+server-key.pem, server-cert.pem e server-req.pem.
+
+## Inicialização 
+Siga a seguinte ordem, sempre olhando a documentação de cada subprojeto:
 
 1. Iniciar os subprojetos ELK e grafana
 2. Iniciar o subprojeto sentilo-core
