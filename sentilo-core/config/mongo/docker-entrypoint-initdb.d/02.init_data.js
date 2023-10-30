@@ -4,8 +4,8 @@ db.application.insert({ "_id" : "sentilo-catalog", "_class" : "org.sentilo.web.c
 
 // Insert users
 print("Load users");
-db.user.insert({ "_id" : "admin", "_class" : "org.sentilo.web.catalog.domain.User", "password" : "1234", "name" : "Administrador", "description" : "", "email" : "sentilo@sentilo.org", "createdAt" : new ISODate(), "active" : true, "roles" : [ "ADMIN"] });
-db.user.insert({ "_id" : "platform_user", "_class" : "org.sentilo.web.catalog.domain.User", "password" : "sentilo", "name" : "Platform user", "description" : "PubSub platform user. Do not remove  it!.", "email" : "sentilo@sentilo.org", "createdAt" : new ISODate(), "active" : true, "roles" : [ "PLATFORM" ] });
+// db.user.insert({ "_id" : "admin", "_class" : "org.sentilo.web.catalog.domain.User", "password" : "1234", "name" : "Administrador", "description" : "", "email" : "sentilo@sentilo.org", "createdAt" : new ISODate(), "active" : true, "roles" : [ "ADMIN"] });
+// db.user.insert({ "_id" : "platform_user", "_class" : "org.sentilo.web.catalog.domain.User", "password" : "sentilo", "name" : "Platform user", "description" : "PubSub platform user. Do not remove  it!.", "email" : "sentilo@sentilo.org", "createdAt" : new ISODate(), "active" : true, "roles" : [ "PLATFORM" ] });
 
 // Insert permissions
 print("Load permissions");
@@ -13,7 +13,8 @@ db.permission.insert({ "_id" : "sentilo-catalog@sentilo-catalog", "_class" : "or
 
 //Create a default tenant with default params (name Sentilo, location centered at Barcelona, ...)
 print("Load default tenant");
-db.tenant.insert({ "_id" : "sentilo", "_class" : "org.sentilo.web.catalog.domain.Tenant", "name" : "Sentilo", "description" : "Sentilo tenant", "isDefault": true, "contactName" : "Fill in your contact details", "contactEmail" : "fill_in@your.mail", "isPublic" : true, "mapParams" : { "zoomLevel" : 14, "center" : { "latitude" : 41.4001221, "longitude" : 2.172839 }}, "createdAt" : new ISODate(), "createdBy" : "sentilo"});
+db.tenant.insert({ "_id" : "toledo-pr", "_class" : "org.sentilo.web.catalog.domain.Tenant", "name" : "Toledo", "description" : "Toledo tenant (default)", "isDefault": true, "contactName" : "Fill in your contact details", "contactEmail" : "fill_in@your.mail", "isPublic" : true, "mapParams" : { "zoomLevel" : 14, "center" : { "latitude" : -24.7300557, "longitude" : -53.7358805}, "bgColor" : "#1a671b"}, "createdAt" : new ISODate(), "createdBy" : "sadmin"});
+db.tenant.insert({ "_id" : "vitoria-es", "_class" : "org.sentilo.web.catalog.domain.Tenant", "name" : "Vitória", "description" : "Vitória tenant", "isDefault": false, "contactName" : "Fill in your contact details", "contactEmail" : "fill_in@your.mail", "isPublic" : true, "mapParams" : { "zoomLevel" : 14, "center" : { "latitude" : -20.2841786, "longitude" : -40.3105601 }, "bgColor" : "#9a9a9a" }, "createdAt" : new ISODate(), "createdBy" : "sadmin"});
 
 // Create a default super admin user 
 print("Load default super-admin user");
