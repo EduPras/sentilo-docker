@@ -5,7 +5,7 @@ db.application.insert({ "_id" : "sentilo-catalog", "_class" : "org.sentilo.web.c
 // Insert users
 print("Load users");
 // db.user.insert({ "_id" : "admin", "_class" : "org.sentilo.web.catalog.domain.User", "password" : "1234", "name" : "Administrador", "description" : "", "email" : "sentilo@sentilo.org", "createdAt" : new ISODate(), "active" : true, "roles" : [ "ADMIN"] });
-// db.user.insert({ "_id" : "platform_user", "_class" : "org.sentilo.web.catalog.domain.User", "password" : "sentilo", "name" : "Platform user", "description" : "PubSub platform user. Do not remove  it!.", "email" : "sentilo@sentilo.org", "createdAt" : new ISODate(), "active" : true, "roles" : [ "PLATFORM" ] });
+db.user.insert({ "_id" : "platform_user", "_class" : "org.sentilo.web.catalog.domain.User", "password" : "sentilo", "name" : "Platform user", "description" : "PubSub platform user. Do not remove  it!.", "email" : "sentilo@sentilo.org", "createdAt" : new ISODate(), "active" : true, "roles" : [ "PLATFORM" ] });
 
 // Insert permissions
 print("Load permissions");
