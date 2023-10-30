@@ -7,6 +7,15 @@ Antes de iniciar o projeto é necessário que as chaves **privada, pública e de
 estejam localizadas em **certs/server**, sendo nomeadas, respectivamente como: 
 server-key.pem, server-cert.pem e server-req.pem.
 
+### Variáveis de ambiente
+Na raíz do projeto, adicione um arquivo **.envsrch**, com os seguintes atributos:
+```bash
+export MONGO_INITDB_ROOT_USERNAME=xxx
+export MONGO_INITDB_ROOT_PASSWORD=xxx
+export REDIS_INITDB_ROOT_USERNAME=xxx
+export REDIS_INITDB_ROOT_PASSWORD=xxx
+```
+
 ## Inicialização 
 Siga a seguinte ordem, sempre olhando a documentação de cada subprojeto:
 
