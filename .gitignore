@@ -1,6 +1,6 @@
 certificados
 certificados.zip
-**/*.pem
 estest
 __pycache__
 **/*.log
+certs/server/
