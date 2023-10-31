@@ -29,6 +29,9 @@ services:
     volumes:
       - ./kibana/kibana.yml:$KBN_CONF_PATH/kibana.yml
       - ./certs:$KBN_CONF_PATH/certs/
+    environment:
+      KIBANA_USER: $KIBANA_USER
+      KIBANA_PASSWORD: $KIBANA_PASSWORD
     networks:
       - sentilo_network
     depends_on:
@@ -42,6 +45,9 @@ services:
       - ./logstash/pipeline:/usr/share/logstash/pipeline
       - ./logstash/logstash.yml:$LOGSTASH_CONF_PATH/logstash.yml
       - ./certs/:$LOGSTASH_CONF_PATH/certs/
+    environment:
+      LOGSTASH_USER: $LOGSTASH_USER
+      LOGSTASH_PASSWORD: $LOGSTASH_PASSWORD
     depends_on:
       es01:
         condition: service_healthy   

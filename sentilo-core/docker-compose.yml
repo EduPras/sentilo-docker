@@ -7,9 +7,6 @@ services:
     volumes:
       - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf
       - sentilo-redis-vol:/data
-    environment:
-      REDIS_INITDB_ROOT_USERNAME: $REDIS_INITDB_ROOT_USERNAME
-      REDIS_INITDB_ROOT_PASSWORD: $REDIS_INITDB_ROOT_PASSWORD
     ports:
       - "6379:6379"
     networks:
@@ -48,8 +45,6 @@ services:
     ports:
       - "7081:7081"
       - "8081:8081"
-    environment:
-      REDIS_INITDB_ROOT_PASSWORD: REDIS_INITDB_ROOT_PASSWORD
     depends_on:
       sentilo-catalog-web:
         condition: service_healthy

@@ -12,8 +12,11 @@ Na raíz do projeto, adicione um arquivo **.envsrch**, com os seguintes atributo
 ```bash
 export MONGO_INITDB_ROOT_USERNAME=xxx
 export MONGO_INITDB_ROOT_PASSWORD=xxx
-export REDIS_INITDB_ROOT_USERNAME=xxx
-export REDIS_INITDB_ROOT_PASSWORD=xxx
+export ELASTIC_PASSWORD=xxx
+export LOGSTASH_USER=xxx
+export LOGSTASH_PASSWORD=xxx
+export KIBANA_USER=xxx
+export KIBANA_PASSWORD=xxx
 ```
 
 ## Inicialização 
@@ -29,3 +32,4 @@ cada estação.
 
 > TODO: Fazer um único algoritmo que recebe dados de inúmeras estações 
 e realizar o _parser_ corretamente de todos.
+> TODO: Adicionar secrets do Redis nas variáveis de ambiente.
