@@ -59,7 +59,7 @@ def parser(json_message):
         "timestamp" : timestamp,
         "location": location
     }]
-    print(to_send)
+    # print(to_send)
     send_to_sentilo(device_id, to_send,to_send)
     return
 
