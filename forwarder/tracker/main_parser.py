@@ -6,7 +6,7 @@ import json
 redirect_url = "http://localhost:8081/data/toledo-pr@coleta-rastreamento/"
 headers = {
 	'Content-Type': 'application/json',
-	'IDENTITY_KEY': '0b54fe743e82dac27049c388615f49242dd2a52bab690eb732659f57e8db7ae3'
+	'IDENTITY_KEY': '04e32cfb9a34d1f4d6d789ed620782dfbf202f189a048386ad4f3e6042ad9454'
 }
 
 urllib3.disable_warnings()
