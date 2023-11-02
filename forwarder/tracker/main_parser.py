@@ -67,7 +67,7 @@ def send_to_sentilo(sensor_id, body, value):
     sensor_url = redirect_url + sensor_id
     try:
         resp = requests.put(url=sensor_url, json=body, headers=headers, verify=False)
-        print(resp.text)
+        # print(resp.text)
         if resp.status_code == 200:
             logger.info("Uplink fowarded succesfully! sensor_id: " + str(sensor_id) + " - " + str(value))
         else:
