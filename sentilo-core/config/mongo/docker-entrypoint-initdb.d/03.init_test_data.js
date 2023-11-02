@@ -35,7 +35,7 @@ db.componentType.insert({ "_id" : "air_quality", "name" : "Air Quality", "descri
 db.componentType.insert({ "_id" : "temperature", "name" : "Temperature", "description" : "Temperatura", "icon" : "temperatura", "createdAt" : ISODate("2023-09-27T12:44:59Z"), "_class" : "org.sentilo.web.catalog.domain.ComponentType" });
 db.componentType.insert({ "_id" : "humidity", "name" : "Humidity", "description" : "Umidade", "icon" : "sky_spot", "createdAt" : ISODate("2023-09-27T12:50:34Z"), "_class" : "org.sentilo.web.catalog.domain.ComponentType" });
 db.componentType.insert({ "_id" : "wind", "name" : "Anemometer", "description" : "Wind speed", "icon" : "ambient", "createdAt" : ISODate("2023-09-27T17:07:11.035Z"), "_class" : "org.sentilo.web.catalog.domain.ComponentType" });
-
+db.componentType.insert({ "_id" : "traffic", "name" : "Traffic", "description" : "Traffic measurement", "icon" : "bus", "createdAt" : ISODate("2023-11-01T18:07:32.453Z"), "_class" : "org.sentilo.web.catalog.domain.ComponentType" })
 // Insert sensor types
 print("Load sensor types");
 db.sensorType.insert({ "_id" :"temperature", "_class" : "org.sentilo.web.catalog.domain.SensorType", "name" : "Temperature",  "createdAt" : ISODate("2013-11-08T10:27:36.152Z") });
@@ -54,3 +54,4 @@ db.sensorType.insert({ "_id" : "air_quality_so2", "name" : "SO2", "description" 
 db.sensorType.insert({ "_id" : "air_quality_co", "name" : "CO", "description" : "Carbon Monoxide measurement", "createdAt" : ISODate("2023-09-27T17:58:53.729Z"), "_class" : "org.sentilo.web.catalog.domain.SensorType" });
 db.sensorType.insert({ "_id" : "air_quality_co2", "name" : "CO2", "description" : "Carbon dioxide measurement", "createdAt" : ISODate("2023-09-27T17:59:08.050Z"), "_class" : "org.sentilo.web.catalog.domain.SensorType" });
 db.sensorType.insert({ "_id" : "air_quality_ox", "name" : "OX", "description" : "OX = O3 + NO2", "createdAt" : ISODate("2023-09-27T21:04:40.555Z"), "_class" : "org.sentilo.web.catalog.domain.SensorType" });
+db.sensorType.insert({ "_id" : "tracker", "name" : "Tracker", "description" : "Vehicle tracker", "createdAt" : ISODate("2023-11-01T18:08:01.927Z"), "_class" : "org.sentilo.web.catalog.domain.SensorType" })
