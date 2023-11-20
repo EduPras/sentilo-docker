@@ -7,8 +7,8 @@ services:
     environment:
       - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    # ports:
-    #   - 9200:9200
+    ports:
+      - 9200:9200
     volumes:
       - es01_data:/usr/share/elasticsearch/data
       - ./elasticsearch/elasticsearch.yml:$ELASTIC_CONF_PATH/elasticsearch.yml
