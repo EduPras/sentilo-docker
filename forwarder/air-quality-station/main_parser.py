@@ -3,10 +3,10 @@ import logging
 import urllib3
 import json
 
-redirect_url = "https://200.134.31.211/data/UTFPR-TD/"
+redirect_url = "https://sentilo.td.utfpr.edu.br/data/toledo-pr@qualidade-ar/"
 headers = {
 	'Content-Type': 'application/json',
-	'IDENTITY_KEY': '693bbd2b277d391348d1ed7d265de385e419be9fa67e13f747e4bc0f79937814'
+	'IDENTITY_KEY': '327328b2ada79ccda93ceb28b85869eb5f4a1360e2369c9db99d7298371ee29e'
 }
 
 urllib3.disable_warnings()
@@ -32,6 +32,8 @@ def parser(json_message):
     to_send = { "observations" : []}
 
     for key, value in uplink_message["decoded_payload"].items():
+        if "Best" in key:
+            continue
         if value != 'NaN':
             this_device = key
             to_send["observations"] = [{
@@ -45,6 +47,8 @@ def parser(json_message):
                 "timestamp" : timestamp,
                 "location": location
             }]
+            # <comp_name>_<this_device>
+            this_device = "air-quality-comp1_"+this_device
             send_to_sentilo(this_device, to_send, value)
     return
 
