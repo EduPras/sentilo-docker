@@ -29,30 +29,30 @@ def parser(json_message):
         latitude = uplink_message["locations"]["user"]["latitude"]
         longitude = uplink_message["locations"]["user"]["longitude"]
         location = f'{latitude} {longitude}'
+    
+        to_send = { "observations" : []}
+
+        for key, value in uplink_message["decoded_payload"].items():
+            if "Best" in key:
+                continue
+            if value != 'NaN':
+                this_device = key
+                to_send["observations"] = [{
+                    "value" : json.dumps({
+                        'raw_value': value,
+                        'coordinates':{
+                            'lat': latitude,
+                            'lon': longitude
+                        }
+                    }),
+                    "timestamp" : timestamp,
+                    "location": location
+                }]
+                # <comp_name>_<this_device>
+                this_device = "air-quality-comp1_"+this_device
+                send_to_sentilo(this_device, to_send, value)
     except:
         logger.exception("Parser error")
-    
-    to_send = { "observations" : []}
-
-    for key, value in uplink_message["decoded_payload"].items():
-        if "Best" in key:
-            continue
-        if value != 'NaN':
-            this_device = key
-            to_send["observations"] = [{
-                "value" : json.dumps({
-                    'raw_value': value,
-                    'coordinates':{
-                        'lat': latitude,
-                        'lon': longitude
-                    }
-                }),
-                "timestamp" : timestamp,
-                "location": location
-            }]
-            # <comp_name>_<this_device>
-            this_device = "air-quality-comp1_"+this_device
-            send_to_sentilo(this_device, to_send, value)
     return
 
 def send_to_sentilo(sensor_id, body, value):
