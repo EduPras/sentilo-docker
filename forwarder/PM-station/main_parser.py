@@ -2,11 +2,12 @@ import requests
 import logging
 import urllib3
 import json
+from main_calib import calibration
 
-redirect_url = "https://200.134.31.211/data/PM_station/"
+redirect_url = "https://sentilo.td.utfpr.edu.br/data/vitoria-es@PM_station/"
 headers = {
 	'Content-Type': 'application/json',
-	'IDENTITY_KEY': '2715a2fb185b24e25b33f486464b21cc7bbd2c9da3f076bd72f42b2850b45324'
+	'IDENTITY_KEY': '59235a7f4dca9ca4b4085eea617e602ec52923834584be077ebfe33ebf045d96'
 }
 
 urllib3.disable_warnings()
@@ -36,20 +37,38 @@ def parser(json_message):
     
     to_send = { "observations" : []}
 
+    temperature = uplink_message["decoded_payload"]["Temperatura_1"]
+    humidity = uplink_message["decoded_payload"]["Umidade_1"]
+
     for key, value in uplink_message["decoded_payload"].items():
         if value != 'NaN':
             this_device = device_id + "_" + key
-            to_send["observations"] = [{
-                "value" : json.dumps({
-                    'raw_value': value,
-                    'coordinates':{
-                        'lat': latitude,
-                        'lon': longitude
-                    }
-                }),
-                "timestamp" : timestamp,
-                "location": location
-            }]
+            if key != 'Temperatura_1' and key != 'Umidade_1':
+                cal =  float(calibration(key, value, temperature, humidity))
+                to_send["observations"] = [{
+                    "value" : json.dumps({
+                        'raw_value': value,
+                        'cal_value': cal,
+                        'coordinates':{
+                            'lat': latitude,
+                            'lon': longitude
+                        }
+                    }),
+                    "timestamp" : timestamp,
+                    "location": location
+                }]
+            else:
+                to_send["observations"] = [{
+                    "value" : json.dumps({
+                        'raw_value': value,
+                        'coordinates':{
+                            'lat': latitude,
+                            'lon': longitude
+                        }
+                    }),
+                    "timestamp" : timestamp,
+                    "location": location
+                }]
             send_to_sentilo(this_device, to_send, value)
     return
 
