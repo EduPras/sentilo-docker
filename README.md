@@ -8,11 +8,12 @@ estejam localizadas em **certs/server**, sendo nomeadas, respectivamente como:
 server-key.pem, server-cert.pem e server-req.pem.
 
 ### Variáveis de ambiente
-Na raíz do projeto, adicione um arquivo **.envsrch**, com os seguintes atributos:
+Na raíz do projeto, adicione um arquivo **.envsrc**, com os seguintes atributos:
 ```bash
 export MONGO_INITDB_ROOT_USERNAME=xxx
 export MONGO_INITDB_ROOT_PASSWORD=xxx
 export ELASTIC_PASSWORD=xxx
+export ELASTIC_USER=xxx
 export LOGSTASH_USER=xxx
 export LOGSTASH_PASSWORD=xxx
 export KIBANA_USER=xxx
@@ -20,10 +21,16 @@ export KIBANA_PASSWORD=xxx
 ```
 
 ## Inicialização 
-Siga a seguinte ordem, sempre olhando a documentação de cada subprojeto:
+Siga a seguinte ordem, lendo a documentação:
 
-1. Iniciar os subprojetos ELK e grafana
-2. Iniciar o subprojeto sentilo-core
+1. Criar volumes dockers para as imagens necessárias.
+2. Criar a rede interna docker "sentilo_network".
+3. 
+    ```bash
+    source .envsrc
+    ```
+4. Iniciar os subprojetos ELK, sentilo-core e monitoring.
+5. Configurar e executar os encaminhadores.
 
 Sensores que utilizam da LoraWAN como rede para envio de dados e utilizam-se do 
 gateway da TTN, é necessário um script que converte requisições MQTT para HTTP.

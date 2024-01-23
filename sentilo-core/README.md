@@ -1,5 +1,5 @@
 # sentilo-core
-Esse projeto docker roda os módulos relacionados a sentilo, como:
+Esse projeto docker executa os módulos relacionados a sentilo, como:
 * redis
 * MongoDB
 * Agents 
