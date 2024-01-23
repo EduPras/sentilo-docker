@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.49.1 
+    container_name: monitoring_prometheus
+    ports:
+      - 9090:9090
+    networks:
+      - sentilo_network
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+
+  node-exporter: 
+    image: prom/node-exporter:v1.7.0
+    container_name: monitoring_node-exporter 
+    restart: unless-stopped 
+    volumes: 
+      - /proc:/host/proc:ro 
+      - /sys:/host/sys:ro 
+      - /:/rootfs:ro 
+    command: 
+      - '--path.procfs=/host/proc' 
+      - '--path.rootfs=/rootfs' 
+      - '--path.sysfs=/host/sys' 
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)' 
+    networks: 
+      - sentilo_network
+
+  cadvisor: 
+    image: gcr.io/cadvisor/cadvisor:latest 
+    container_name: monitoring_cadvisor 
+    ports: 
+      - 8082:8080 
+    networks: 
+      - sentilo_network
+    volumes: 
+      - /:/rootfs:ro 
+      - /var/run:/var/run:rw 
+      - /sys:/sys:ro 
+      - /var/lib/docker/:/var/lib/docker:ro 
+
+  grafana:
+    image: grafana/grafana:10.2.3
+    container_name: monitoring_grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+    ports:
+      - 3000:3000
+    networks:
+      - sentilo_network
+
+  elasticsearch-exporter:
+    image: quay.io/prometheuscommunity/elasticsearch-exporter:latest
+    container_name: monitoring_elasticsearch-exporter
+    command:
+     - '--es.uri=http://${ELASTIC_USER}:${ELASTIC_PASSWORD}@es01:9200'
+    networks:
+      - sentilo_network
+
+networks:
+  sentilo_network:
+    name: sentilo_network
+    external: true
+
+volumes:
+  grafana-data:
+    driver: local
