@@ -6,7 +6,7 @@ services:
     container_name: elastic_es01
     environment:
       - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
     ports:
       - 9200:9200
     volumes:
