@@ -6,7 +6,7 @@ import json
 redirect_url = "https://sentilo.td.utfpr.edu.br/data/toledo-pr@qualidade-ar/"
 headers = {
 	'Content-Type': 'application/json',
-	'IDENTITY_KEY': '327328b2ada79ccda93ceb28b85869eb5f4a1360e2369c9db99d7298371ee29e'
+	'IDENTITY_KEY': '4b052d000405871c2223675db35dd3f39a51198712d8f8ad3f80b1a83558a05f'
 }
 
 urllib3.disable_warnings()
