@@ -3,7 +3,7 @@ services:
   sentilo-redis:
     image: redis:${REDIS_VERSION}
     container_name: sentilo-redis
-    command: ["redis-server", "/usr/local/etc/redis/redis.conf", "--appendonly", "yes"]
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     volumes:
       - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf
       - sentilo-redis-vol:/data
