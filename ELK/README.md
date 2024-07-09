@@ -1,7 +1,9 @@
 # ELK
 
 ## Setup
-Primeiramente é necessário rodar um container efêmero para gerar os certificados, com o arquivo
-**docker-compose_gen-cert.yml**.
-Após isso pode-se usar normalmente o docker compose.
+Ao utilizar o script de inicialização **server.sh**, entre dentro do container do
+elastic e execute *bin/elasticsearch-setup-passwords*, de acordo com o arquivo
+**.envsrc** da raíz do projeto.
 
+Após estar funcionando corretamente, entre na kibana e crie uma role e user para 
+o Logstash, novamente, com as mesmas credenciais colocadas no arquivo **.envsrc**

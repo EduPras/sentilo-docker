@@ -15,7 +15,6 @@ urllib3.connectionpool.log.disabled = True
 logger = logging.getLogger('PARSER')
 
 def parser(json_message):
-    print(json_message)
     try: 
         end_device_ids = json_message["end_device_ids"]
         device_id = end_device_ids["device_id"]
