@@ -15,6 +15,7 @@ urllib3.connectionpool.log.disabled = True
 logger = logging.getLogger('PARSER')
 
 def parser(json_message):
+    print(json_message)
     try: 
         end_device_ids = json_message["end_device_ids"]
         device_id = end_device_ids["device_id"]
@@ -26,8 +27,16 @@ def parser(json_message):
 
         # location
         uplink_message = json_message["uplink_message"]
-        latitude = uplink_message["locations"]["user"]["latitude"]
-        longitude = uplink_message["locations"]["user"]["longitude"]
+        # default lat log at UTFPR-TD
+        latitude = '-24.7330471'
+        longitude = '-53.7663416'
+        if uplink_message.get('locations'):
+            latitude = uplink_message["locations"]["user"]["latitude"]
+            longitude = uplink_message["locations"]["user"]["longitude"]
+        elif uplink_message.get('rx_metadata')[0].get('location'):
+            latitude = uplink_message['rx_metadata'][0]['location']['latitude']
+            longitude = uplink_message['rx_metadata'][0]['location']['longitude']
+        
         location = f'{latitude} {longitude}'
     
         to_send = { "observations" : []}
